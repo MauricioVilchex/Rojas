@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editor de Imágenes en Lote</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .container { max-width: 700px; margin: auto; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input[type="file"], button {
+      width: 100%; padding: 8px; margin-top: 5px;
+    }
+    .resultado { margin-top: 20px; }
+    .resultado img { max-width: 100%; margin-bottom: 10px; border: 1px solid #ccc; }
+    .error { color: red; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Editor de Imágenes en Lote</h2>
+    <p>Sube varias imágenes y aplica el mismo estilo a todas:</p>
+
+    <form action="/" method="POST" enctype="multipart/form-data">
+      <label for="imagenes">1. Selecciona una o varias imágenes (Ctrl+clic):</label>
+      <input type="file" id="imagenes" name="imagenes" accept="image/*" multiple required>
+
+      <button type="submit" style="margin-top: 15px;">Procesar imágenes</button>
+    </form>
+
+    {% if resultado_urls %}
+      <div class="resultado">
+        <h3>Resultados:</h3>
+        {% for url in resultado_urls %}
+          <div class="item">
+            <img src="{{ url }}" alt="Imagen procesada">
+            <p><a href="{{ url }}" download="resultado_{{ loop.index }}.png">Descargar {{ loop.index }}</a></p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>
